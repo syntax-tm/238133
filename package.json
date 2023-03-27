@@ -1,0 +1,39 @@
+{
+  "name": "xpath",
+  "displayName": "xpath",
+  "description": "AIM XPath",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.54.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "xpath",
+      "aliases": ["XPath", "xpath"],
+      "extensions": [".xpath.txt",".properties",".endpoints"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "xpath",
+      "scopeName": "source.xpath",
+      "path": "./syntaxes/xpath.tmLanguage.json",
+      "embeddedLanguages": {
+
+      }
+    }],
+    "configurationDefaults": {
+      "[xpath]": {
+        "diffEditor.ignoreTrimWhitespace": false,
+        "editor.wordWrap": "on",
+        "editor.quickSuggestions": {
+          "comments": "off",
+          "strings": "on",
+          "other": "on"
+        }
+      }
+    }
+  }
+}
