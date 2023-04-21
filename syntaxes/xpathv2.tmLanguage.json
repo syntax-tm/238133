@@ -3,7 +3,7 @@
     "name": "XPath V2",
     "patterns": [
         {
-            "include": "#comments"
+            "include": "#comment"
         },
         {
             "include": "#xpath"
@@ -16,7 +16,7 @@
         }
     ],
     "repository": {
-        "xpath-type-const-numbers": {
+        "constant-numeric": {
             "name": "meta.const.numbers",
             "patterns": [
                 {
@@ -39,7 +39,7 @@
                 }
             ]
         },
-        "xpath-type-date": {
+        "constant-other": {
             "patterns": [
                 {
                     "match": "((1[0-2]|0[1-9]|[1-9])\\/([0-9]|0[0-9]|1[0-9]|2[0-9]|3[01])\\/(19[0-9]{2}|20[0-9]{2}|[0-9]{2}))\\b",
@@ -63,8 +63,8 @@
                 }
             ]
         },
-        "xpath-type-token": {
-            "name": "meta.type.token",
+        "entity-token": {
+            "name": "entity.name.type",
             "patterns": [
                 {
                     "match": "(?<type>\\|(?:\\*|\\%)\\|)(.+?)\\1",
@@ -72,20 +72,21 @@
                 }
             ]
         },
-        "comments": {
-            "name": "comment.line",
+        "comment": {
             "patterns": [
                 {
                     "match": "^\\s*(\\#.+?)$",
-                    "comment": "comment at start of line"
+                    "comment": "comment at start of line",
+                    "name": "comment.line"
                 },
                 {
                     "match": "\\s+(#\\s?.+?)$",
-                    "comment": "end of line comment requires at least one space before the #"
+                    "comment": "end of line comment requires at least one space before the #",
+                    "name": "comment.line"
                 }
             ]
         },
-        "xpath-type-keywords": {
+        "constant-language": {
             "name": "meta.type.keyword",
             "patterns": [
                 {
@@ -110,7 +111,7 @@
                 }
             ]
         },
-        "xpath-type-keyvalue": {
+        "meta-keyvalue": {
             "name": "string",
             "begin": "(.+?)(=)",
             "beginCaptures": {
@@ -129,24 +130,24 @@
             },
             "patterns": [
                 {
-                    "include": "#xpath-type-token"
+                    "include": "#entity-token"
                 },
                 {
-                    "include": "#xpath-type-const-numbers"
+                    "include": "#constant-numeric"
                 },
                 {
-                    "include": "#xpath-type-keywords"
+                    "include": "#constant-language"
                 },
                 {
-                    "include": "#xpath-type-strings"
+                    "include": "#string-quoted"
                 },
                 {
                     "match": "(?i)[a-z]\\:\\\\.+?(?=;|$|\\r|\\n)",
-                    "name": "string.other.link"
+                    "name": "markup.underline.link"
                 },
                 {
                     "match": "(?i)(\\\\){2}.+?(?=;|$|\\r|\\n)",
-                    "name": "string.other.link"
+                    "name": "markup.underline.link"
                 },
                 {
                     "name": "keyword.other.using",
@@ -154,7 +155,7 @@
                 }
             ]
         },
-        "xpath-type-links": {
+        "markup-underline-link": {
             "name": "meta.type.link",
             "patterns": [
                 {
@@ -172,22 +173,22 @@
                 }
             ]
         },
-        "xpath-type-strings": {
+        "string-quoted": {
             "name": "meta.type.string",
             "patterns": [
                 {
-                    "name": "string",
+                    "name": "string.quoted.single",
                     "begin": "'",
                     "end": "'"
                 },
                 {
-                    "name": "string",
+                    "name": "string.quoted.double",
                     "begin": "\"",
                     "end": "\""
                 }
             ]
         },
-        "xpath-xquery": {
+        "meta-xquery": {
             "name": "meta.xquery",
             "patterns": [
                 {
@@ -211,19 +212,19 @@
                     "comment": "brackets"
                 },
                 {
-                    "include": "#xpath-xquery-punctuation"
+                    "include": "#meta-xquery-punctuation"
                 },
                 {
-                    "name": "entity.name.function",
+                    "name": "support.function",
                     "match": "(?i)([a-zA-Z](\\w|\\-|\\_)+)\\s*\\(\\s*\\)"
                 },
                 {
                     "name": "keyword",
-                    "match": "(?i)\\b(value)\\b"
+                    "match": "(?i)\\b(@?value)\\b"
                 }
             ]
         },
-        "xpath-xquery-punctuation": {
+        "meta-xquery-punctuation": {
             "name": "meta.punctuation.xquery",
             "patterns": [
                 {
@@ -247,7 +248,7 @@
                 "1": {
                     "patterns": [
                         {
-                            "include": "#xpath-xquery"
+                            "include": "#meta-xquery"
                         }
                     ]
                 },
@@ -257,22 +258,25 @@
                 "3": {
                     "patterns": [
                         {
-                            "include": "#xpath-type-token"
+                            "include": "#entity-token"
                         },
                         {
-                            "include": "#xpath-type-keyvalue"
+                            "include": "#meta-keyvalue"
                         },
                         {
-                            "include": "#xpath-type-keywords"
+                            "include": "#constant-other"
                         },
                         {
-                            "include": "#comments"
+                            "include": "#constant-language"
                         },
                         {
-                            "include": "#xpath-type-const-numbers"
+                            "include": "#comment"
                         },
                         {
-                            "include": "#xpath-type-links"
+                            "include": "#constant-numeric"
+                        },
+                        {
+                            "include": "#markup-underline-link"
                         }
                     ]
                 }
@@ -291,22 +295,22 @@
                 "3": {
                     "patterns": [
                         {
-                            "include": "#xpath-type-token"
+                            "include": "#entity-token"
                         },
                         {
-                            "include": "#xpath-type-keyvalue"
+                            "include": "#meta-keyvalue"
                         },
                         {
-                            "include": "#xpath-type-keywords"
+                            "include": "#constant-language"
                         },
                         {
-                            "include": "#xpath-type-const-numbers"
+                            "include": "#constant-numeric"
                         },
                         {
-                            "include": "#xpath-type-links"
+                            "include": "#markup-underline-link"
                         },
                         {
-                            "include": "#comments"
+                            "include": "#comment"
                         }
                     ]
                 }
