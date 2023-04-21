@@ -23,6 +23,7 @@ $version = $packageConfig.version
 if ([string]::IsNullOrWhiteSpace($verison))
 {
     throw "The 'version' element in package.json is required."
+    return
 }
 
 # NOTE: currently versions can be installed side-by-side so long as they have a unique id
@@ -45,9 +46,6 @@ if ([string]::IsNullOrWhiteSpace($verison))
 #    return
 #}
 
-$semVersion = [version]::Parse($version)
-$rev = $semVersion.Revision
-
-$extensionInstallPath = Join-Path $vsCodeExtensionsPath "xpath-v$rev-$version"
+$extensionInstallPath = Join-Path $vsCodeExtensionsPath "xpathv2-$version"
 
 Copy-Item $repoRoot -Destination $extensionInstallPath -Recurse
