@@ -1,0 +1,22 @@
+{
+    "WCF BindingConfiguration Transport": {
+        "prefix": [ "binding", "transport" ],
+        "body": ["//configuration/system.serviceModel/bindings/basicHttpBinding/binding[@name='${0}']/@mode->${1|None,Transport,Message,TransportWithMessageCredential,TransportCredentialOnly|}"],
+        "description": "Config transform for WCF BindingConfiguration Transport mode."
+    },
+    "AppSetting": {
+        "prefix": ["appSetting", "key", "setting"],
+        "body": ["//configuration/appSettings/add[@key='${0}']/@value->${1:value}"],
+        "description": "Config transform for a custom application setting."
+    },
+    "Endpoint": {
+        "prefix": ["endpoint"],
+        "body": ["|%|${0:endpoint}|%|->${1:value}"],
+        "description": "An endpoint for config transform."
+    },
+    "Token": {
+        "prefix": ["token"],
+        "body": ["|*|${0:token}|*|->${1:value}"],
+        "description": "A token for config transform."
+    }
+}

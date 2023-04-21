@@ -1,0 +1,63 @@
+# ENDPOINTS:
+# ----------
+
+|*|token|*|->https://something.com
+|%|endpoint_token|%|->https://google.com
+
+# XPATH:
+# ------
+
+//appSettings/add[@key='testkey']/@value->the new value # this comment would not show up after transform
+//connectionStrings/add[@name='mainbase']/@connectionString->Driver={Adaptive Server Enterprise};Server=|%|mainbase-url|%|;Port=|%|mainbase-port|%|;db=master;
+//setting[@name='some_random_setting']/value/text()->|%|endpoint_1|%|/Service1.svc
+//appSettings/add[@key='setting1']/@value-> # this would clear the value attribute of add element with the 'key' attribute set to 'setting1'
+
+# SECRETS:
+# --------
+
+THIS/IS/A/SECRET = password1
+
+# FEATURES:
+# ---------
+
+# Comments
+
+# from the beginning of the line
+//xpath/query->true # and at the end of the line
+
+# Token Highlighting
+
+//system.web/sessionState/@timeout->|*|session_timeout|*|
+
+# Keyword Highlighting
+
+|*|someToken|*|->true
+|%|service1_transportMode|%|->Transport
+
+# Path Highlighting
+
+|*|some_share_path|*|->\\server\share\file.txt
+|%|endpoint_share_path|%|->C:\test\file2.txt
+
+# IP Address Highlighting
+
+//appSettings/add[@key='some_random_server']/@hostName->127.0.0.1:42424
+
+# Key Value Pairs (Connection Strings)
+
+//connectionStrings/add[@name='conn1']/@connectionString->Driver={Adaptive Server Enterprise};NA=|%|db_srv_1-url|%|,|%|db_srv_1-port|%|;db=db1;uid=|*|ASE/SRV1/DB1/USR|*|;pwd=|*|ASE/SRV1/DB1/PSW|*|
+
+# Detect Invalid Transforms
+
+|*|invalid_token|%|->https://elgoog.com
+THIS/IS/NOT/A/SECRET=nospace
+\appSettings\add[@key='some_random_server']->true
+
+# Regions
+
+#region ConnectionStrings
+//connectionStrings/add[@name='db_srv_1']/@connectionString->Driver={Adaptive Server Enterprise};NA=|%|db_srv_1-url|%|,|%|db_srv_1-port|%|;db=db1;uid=|*|ASE/SRV1/DB1/USR|*|;pwd=|*|ASE/SRV1/DB1/PSW|*|
+//connectionStrings/add[@name='db_srv_2']/@connectionString->Driver={Adaptive Server Enterprise};NA=|%|db_srv_2-url|%|,|%|db_srv_2-port|%|;db=db2;uid=|*|ASE/SRV2/DB2/USR|*|;pwd=|*|ASE/SRV1/DB2/PSW|*|
+//connectionStrings/add[@name='db_srv_3']/@connectionString->Driver={Adaptive Server Enterprise};NA=|%|db_srv_3-url|%|,|%|db_srv_3-port|%|;db=db3;uid=|*|ASE/SRV1/DB3/USR|*|;pwd=|*|ASE/SRV1/DB3/PSW|*|
+//connectionStrings/add[@name='db_srv_4']/@connectionString->Driver={Adaptive Server Enterprise};NA=|%|db_srv_4-url|%|,|%|db_srv_4-port|%|;db=db4;uid=|*|ASE/SRV1/DB4/USR|*|;pwd=|*|ASE/SRV1/DB4/PSW|*|
+#endregion

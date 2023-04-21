@@ -1,31 +1,41 @@
 {
-  "name": "xpath",
-  "displayName": "xpath",
-  "description": "AIM XPath",
-  "version": "0.0.1",
+  "name": "xpathv2",
+  "displayName": "xpath-v2",
+  "description": "AIM XPath V2",
+  "version": "0.0.2",
+  "author": {
+    "name": "Trey",
+    "url": "https://github.com/syntax-tm",
+    "email": "trey.morris@zealitconsultants.com"
+  },
   "engines": {
     "vscode": "^1.54.0"
   },
   "categories": [
-    "Programming Languages"
+    "Programming Languages",
+    "Snippets"
   ],
+  "editor.semanticHighlighting.enabled": true,
   "contributes": {
     "languages": [{
-      "id": "xpath",
-      "aliases": ["XPath", "xpath"],
-      "extensions": [".xpath.txt",".properties",".endpoints"],
+      "id": "xpathv2",
+      "extensions": [".set.xpath.txt",".xpath.txt",".properties",".endpoints"],
       "configuration": "./language-configuration.json"
     }],
     "grammars": [{
-      "language": "xpath",
-      "scopeName": "source.xpath",
-      "path": "./syntaxes/xpath.tmLanguage.json",
-      "embeddedLanguages": {
-
-      }
+      "language": "xpathv2",
+      "scopeName": "source.xpathv2",
+      "path": "./syntaxes/xpathv2.tmLanguage.json"
+    }],
+    "snippets":[{
+      "language": "xpathv2",
+      "path": "./snippets/snippets.json"
     }],
     "configurationDefaults": {
-      "[xpath]": {
+      "[xpathv2]": {
+        "files.encoding": "utf8",
+        "files.eol": "\n",
+        "files.trimTrailingWhitespace": true,
         "diffEditor.ignoreTrimWhitespace": false,
         "editor.wordWrap": "on",
         "editor.quickSuggestions": {

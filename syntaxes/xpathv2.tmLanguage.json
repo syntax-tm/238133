@@ -1,0 +1,333 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "XPath V2",
+    "patterns": [
+        {
+            "include": "#comments"
+        },
+        {
+            "include": "#xpath"
+        },
+        {
+            "include": "#token"
+        },
+        {
+            "include": "#secret"
+        }
+    ],
+    "repository": {
+        "xpath-type-const-numbers": {
+            "name": "meta.const.numbers",
+            "patterns": [
+                {
+                    "name": "constant.numeric.integer",
+                    "match": "(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\\:[0-9]+)?",
+                    "comment": "ipv4 with optional port"
+                },
+                {
+                    "match": "(?i)v((\\d+)\\.?)+(\\-.+?\\b)?",
+                    "name": "constant.numeric.integer",
+                    "comment": "semantic version number"
+                },
+                {
+                    "match": "\\b((\\d+)(,)?)+(\\.?\\:?\\d*)\\b",
+                    "name": "constant.numeric.integer"
+                },
+                {
+                    "match": "\\b(\\d+)\\b",
+                    "name": "constant.numeric.integer"
+                }
+            ]
+        },
+        "xpath-type-date": {
+            "patterns": [
+                {
+                    "match": "((1[0-2]|0[1-9]|[1-9])\\/([0-9]|0[0-9]|1[0-9]|2[0-9]|3[01])\\/(19[0-9]{2}|20[0-9]{2}|[0-9]{2}))\\b",
+                    "name": "entity.name.tag.css",
+                    "comment": "date (M/d/yyyy + M/d/yy)"
+                },
+                {
+                    "match": "((1[0-2]|0[1-9]|[1-9])\\-([0-9]|0[0-9]|1[0-9]|2[0-9]|3[01])\\-(19[0-9]{2}|20[0-9]{2}|[0-9]{2}))\\b",
+                    "name": "entity.name.tag.css",
+                    "comment": "date (M-d-yyyy + M-d-yy)"
+                },
+                {
+                    "match": "((19[0-9]{2}|20[0-9]{2})\\/(1[0-2]|0[1-9]|[1-9])\\/([0-9]|0[0-9]|1[0-9]|2[0-9]|3[01]))\\b",
+                    "name": "entity.name.tag.css",
+                    "comment": "date (yyyy/M/d)"
+                },
+                {
+                    "match": "((19[0-9]{2}|20[0-9]{2})\\-(1[0-2]|0[1-9]|[1-9])\\-([0-9]|0[0-9]|1[0-9]|2[0-9]|3[01]))\\b",
+                    "name": "entity.name.tag.css",
+                    "comment": "date (yyyy-M-d)"
+                }
+            ]
+        },
+        "xpath-type-token": {
+            "name": "meta.type.token",
+            "patterns": [
+                {
+                    "match": "(?<type>\\|(?:\\*|\\%)\\|)(.+?)\\1",
+                    "name": "constant.regexp"
+                }
+            ]
+        },
+        "comments": {
+            "name": "comment.line",
+            "patterns": [
+                {
+                    "match": "^\\s*(\\#.+?)$",
+                    "comment": "comment at start of line"
+                },
+                {
+                    "match": "\\s+(#\\s?.+?)$",
+                    "comment": "end of line comment requires at least one space before the #"
+                }
+            ]
+        },
+        "xpath-type-keywords": {
+            "name": "meta.type.keyword",
+            "patterns": [
+                {
+                    "name": "keyword.other",
+                    "match": "(?i)\\b(null|dbnull|nothing)\\b"
+                },
+                {
+                    "name": "keyword.other.bool",
+                    "match": "(?i)\\b(vb)?(true|false)\\b"
+                },
+                {
+                    "name": "keyword.other.wcf.binding-mode",
+                    "match": "(?i)\\b(none|transport|message|transportwithmessagecredential|transportcredentialonly)\\b"
+                },
+                {
+                    "name": "keyword.other",
+                    "match": "(?i)\\b(on|off)\\b"
+                },
+                {
+                    "name": "keyword.other",
+                    "match": "(?i)\\b(yes|no)\\b"
+                }
+            ]
+        },
+        "xpath-type-keyvalue": {
+            "name": "string",
+            "begin": "(.+?)(=)",
+            "beginCaptures": {
+                "1": {
+                    "name": "entity.name.type"
+                },
+                "2": {
+                    "name": "punctuation.definition.tag"
+                }
+            },
+            "end": "($|;|\\n|\\r)",
+            "endCaptures": {
+                "1": {
+                    "name": "punctuation.definition.tag"
+                }
+            },
+            "patterns": [
+                {
+                    "include": "#xpath-type-token"
+                },
+                {
+                    "include": "#xpath-type-const-numbers"
+                },
+                {
+                    "include": "#xpath-type-keywords"
+                },
+                {
+                    "include": "#xpath-type-strings"
+                },
+                {
+                    "match": "(?i)[a-z]\\:\\\\.+?(?=;|$|\\r|\\n)",
+                    "name": "string.other.link"
+                },
+                {
+                    "match": "(?i)(\\\\){2}.+?(?=;|$|\\r|\\n)",
+                    "name": "string.other.link"
+                },
+                {
+                    "name": "keyword.other.using",
+                    "match": "\\{.+?\\}"
+                }
+            ]
+        },
+        "xpath-type-links": {
+            "name": "meta.type.link",
+            "patterns": [
+                {
+                    "match": "(?i)[a-z]\\:\\\\.+?(?=;|$|\\r|\\n)",
+                    "name": "markup.underline.link"
+                },
+                {
+                    "match": "(?i)(\\\\){2}.+?(?=;|$|\\r|\\n)",
+                    "name": "markup.underline.link"
+                },
+                {
+                    "match": "(?i)\\b([\\w\\-\\_]+\\.[\\w\\-\\_]{3,}(\\.([\\w\\-\\_]{3,})+)+)\\b",
+                    "comment": "FQDN",
+                    "name": "entity.name.tag.css"
+                }
+            ]
+        },
+        "xpath-type-strings": {
+            "name": "meta.type.string",
+            "patterns": [
+                {
+                    "name": "string",
+                    "begin": "'",
+                    "end": "'"
+                },
+                {
+                    "name": "string",
+                    "begin": "\"",
+                    "end": "\""
+                }
+            ]
+        },
+        "xpath-xquery": {
+            "name": "meta.xquery",
+            "patterns": [
+                {
+                    "name": "string.regexp",
+                    "begin": "'",
+                    "end": "'"
+                },
+                {
+                    "name": "string.regexp",
+                    "begin": "\"",
+                    "end": "\""
+                },
+                {
+                    "name": "entity.other.attribute-name",
+                    "match": "@(\\w|\\-|\\_)+\\b",
+                    "comment": "xquery attribute"
+                },
+                {
+                    "name": "string",
+                    "match": "(\\[|\\])",
+                    "comment": "brackets"
+                },
+                {
+                    "include": "#xpath-xquery-punctuation"
+                },
+                {
+                    "name": "entity.name.function",
+                    "match": "(?i)([a-zA-Z](\\w|\\-|\\_)+)\\s*\\(\\s*\\)"
+                },
+                {
+                    "name": "keyword",
+                    "match": "(?i)\\b(value)\\b"
+                }
+            ]
+        },
+        "xpath-xquery-punctuation": {
+            "name": "meta.punctuation.xquery",
+            "patterns": [
+                {
+                    "name": "punctuation.definition.tag",
+                    "match": "(\\\\|\\/)"
+                },
+                {
+                    "name": "punctuation.definition.tag",
+                    "match": "(\\-\\>)"
+                },
+                {
+                    "name": "punctuation.definition.tag",
+                    "match": "(\\s=\\s)"
+                }
+            ]
+        },
+        "xpath": {
+            "name": "meta.xpath",
+            "match": "^(\\/{1,2}.+)(\\-\\>)(.+)?$",
+            "captures": {
+                "1": {
+                    "patterns": [
+                        {
+                            "include": "#xpath-xquery"
+                        }
+                    ]
+                },
+                "2": {
+                    "name": "punctuation.definition.tag"
+                },
+                "3": {
+                    "patterns": [
+                        {
+                            "include": "#xpath-type-token"
+                        },
+                        {
+                            "include": "#xpath-type-keyvalue"
+                        },
+                        {
+                            "include": "#xpath-type-keywords"
+                        },
+                        {
+                            "include": "#comments"
+                        },
+                        {
+                            "include": "#xpath-type-const-numbers"
+                        },
+                        {
+                            "include": "#xpath-type-links"
+                        }
+                    ]
+                }
+            }
+        },
+        "token": {
+            "name": "meta.token",
+            "match": "^((?:\\|\\*\\|.+?\\|\\*\\|)|(?:\\|%\\|.+?\\|%\\|))(\\-\\>)(.+?)$",
+            "captures": {
+                "1": {
+                    "name": "constant.regexp"
+                },
+                "2": {
+                    "name": "punctuation.definition.tag"
+                },
+                "3": {
+                    "patterns": [
+                        {
+                            "include": "#xpath-type-token"
+                        },
+                        {
+                            "include": "#xpath-type-keyvalue"
+                        },
+                        {
+                            "include": "#xpath-type-keywords"
+                        },
+                        {
+                            "include": "#xpath-type-const-numbers"
+                        },
+                        {
+                            "include": "#xpath-type-links"
+                        },
+                        {
+                            "include": "#comments"
+                        }
+                    ]
+                }
+            }
+        },
+        "secret": {
+            "name": "meta.secret",
+            "match": "^\\b([\\w\\/\\\\\\-\\_\\.]+?)\\b(\\s+=\\s+)(.+?)$",
+            "captures": {
+                "1": {
+                    "name": "constant.regexp",
+                    "comment": "Secrets file does not have the vertical pipe surrounding the name, so just apply the same syntax"
+                },
+                "2": {
+                    "name": "punctuation.definition.tag"
+                },
+                "3": {
+                    "name": "string"
+                }
+            }
+        }
+    },
+    "scopeName": "source.xpathv2"
+}
